@@ -1,28 +1,29 @@
-local Logger = require("lib.dota-lua-debug.debug").logging
-local log = nil
-if Logger == nil then
-    log = {debug = function(msg) end}
-else
-    log = Logger()
-end
-
 local unit = {}
 
 local events = {}
 
-function unit:register(name)
-    log:debug("register " .. name)
-    events[name] = {id=0, listener={}}
+function unit.events()
+    return events
 end
 
-function unit:notify(name, data)
-    log:debug("notify " .. name)
+function unit.register(name)
+    if events[name] == nil then
+        events[name] = {id=0, listener={}}
+    end
+end
+
+function unit.unregister(name)
+    events[name] = nil
+end
+
+function unit.notify(name, data)
+    if events[name] == nil then return end
     for k, v in pairs(events[name].listener) do
         v(data)
     end
 end
 
-function unit:subscribe(name, callback)
+function unit.subscribe(name, callback)
     if events[name] ~= nil then
         local e = events[name]
         e.id = e.id + 1
@@ -31,7 +32,7 @@ function unit:subscribe(name, callback)
     end
 end
 
-function unit:describe(name, id)
+function unit.describe(name, id)
     if events[name] ~= nil then
         events[name].listener[id] = nil
     end
