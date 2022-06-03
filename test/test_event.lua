@@ -1,18 +1,19 @@
 local lunatest = require "lunatest"
 local assert_equal, assert_not_equal = lunatest.assert_equal, lunatest.assert_not_equal
 
-local event = require('ecs.event')
+-- local event = require('ecs.event')
+local event = require('ecs').event
 
 local unit = {}
+
+local TEST1 = 'test1'
+local TEST2 = 'test2'
 
 local len = function(table)
     local c = 0
     for _ in pairs(table) do c = c + 1 end
     return c
 end
-
-local TEST1 = 'test1'
-local TEST2 = 'test2'
 
 local clear = function()
     local e = event.events()
@@ -22,7 +23,7 @@ local clear = function()
 end
 
 function unit.test_require ()
-	assert_not_equal(event, nil)
+    assert_not_equal(event, nil)
 end
 
 
