@@ -1,6 +1,5 @@
-local unit = {}
-
 local events = {}
+local unit = {}
 
 function unit.events()
     return events
@@ -24,12 +23,14 @@ function unit.notify(name, data)
 end
 
 function unit.subscribe(name, callback)
-    if events[name] ~= nil then
-        local e = events[name]
-        e.id = e.id + 1
-        e.listener[e.id] = callback
-        return e.id
+    if events[name] == nil then
+        unit.register(name)
     end
+
+    local e = events[name]
+    e.id = e.id + 1
+    e.listener[e.id] = callback
+    return e.id
 end
 
 function unit.describe(name, id)
