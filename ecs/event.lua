@@ -1,30 +1,30 @@
 local events = {}
 local unit = {}
 
-function unit.events()
+function unit:events()
     return events
 end
 
-function unit.register(name)
+function unit:register(name)
     if events[name] == nil then
         events[name] = {id=0, listener={}}
     end
 end
 
-function unit.unregister(name)
+function unit:unregister(name)
     events[name] = nil
 end
 
-function unit.notify(name, data)
+function unit:notify(name, data)
     if events[name] == nil then return end
     for k, v in pairs(events[name].listener) do
         v(data)
     end
 end
 
-function unit.subscribe(name, callback)
+function unit:subscribe(name, callback)
     if events[name] == nil then
-        unit.register(name)
+        self:register(name)
     end
 
     local e = events[name]
@@ -33,7 +33,7 @@ function unit.subscribe(name, callback)
     return e.id
 end
 
-function unit.describe(name, id)
+function unit:describe(name, id)
     if events[name] ~= nil then
         events[name].listener[id] = nil
     end
